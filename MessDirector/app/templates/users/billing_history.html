@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<nav class="navbar navbar-expand-lg navbar-light">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse " id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-item bg-info nav-link btn"  href="{{ url_for('users.user_page')}}">Attendance</a>
+      <a class="nav-item bg-warning nav-link btn" data-toggle="collapse"  href="#billing_history">Billing History</a>
+      <a class="nav-item bg-primary nav-link btn" data-toggle="collapse" href="#profile">Profile</a>
+    </div>
+  </div>
+</nav>
+
+<main role="main" class="container">
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+
+      <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>No</th>
+        <th>Date</th>
+        <th>Current Bill</th>
+        <th>Total Bill</th>
+        <th>Amount Paid</th>
+        <th>Bill Balance</th>
+      </tr>
+      </thead>
+      <tbody>
+
+
+      {% for bill_items in billing_history %}
+      <tr>
+        <td> {{ loop.index }}</td>
+        <td>{{ bill_items.bill_date }}</td>
+        <td>{{ '%0.3f'| format(bill_items.bill_amount_current_date)|float }}</td>
+        <td> {{ '%0.3f'| format(bill_items.bill_total)|float }} </td>
+        <td> {{ '%0.3f'| format(bill_items.bill_payment)|float }} </td>
+        <td> {{ '%0.3f'| format(bill_items.bill_balance)|float }} </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+      </table>
+
+        </div>
+      </div>
+  </main>
+
+{% endblock content %}

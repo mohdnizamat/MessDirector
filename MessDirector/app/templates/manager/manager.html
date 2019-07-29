@@ -1,0 +1,184 @@
+
+{% extends "layout.html" %}
+{% block content %}
+
+<nav class="navbar navbar-expand-lg navbar-light">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse " id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-item bg-info nav-link btn" data-toggle="collapse" active"  href="#attendance_today">Todays Attendance <span class="sr-only">(current)</span></a>
+      <a class="nav-item bg-warning nav-link btn" data-toggle="collapse" " href="#approval_pending">Approval Pending</a>
+      <a class="nav-item bg-primary nav-link btn" data-toggle="collapse" href="#hostel_members">Hostel Members</a>
+      <a class="nav-item bg-secondary nav-link btn" data-toggle="collapse" href="#hostel_alumni">Hostel Alumni</a>
+      <a class="nav-item bg-danger nav-link btn" href="{{ url_for('manager.bill_section')}}">Billing</a>
+      <a class="nav-item bg-info nav-link btn" href="{{ url_for('manager.attendance_section')}}">Other Attendance</a>
+    </div>
+  </div>
+</nav>
+
+
+<div class="container">
+  <div class="row collapse" id="hostel_members">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+ {% with messages = get_flashed_messages(with_categories=true) %}
+   {% if messages %}
+     {% for category, message in messages %}
+       <div class="alert alert-{{ category }}">
+         {{ message }}
+       </div>
+     {% endfor %}
+   {% endif %}
+ {% endwith %}
+
+<table class="table table-striped">
+<thead>
+<tr>
+  <th>No</th>
+  <th>Name</th>
+  <th>Phonenumber</th>
+  <th>Bill Balance </th>
+  <th>Blood Group </th>
+
+</tr>
+</thead>
+<tbody>
+
+
+{% for users, details in users.items() %}
+<tr>
+  <td> {{ loop.index }}</td>
+  <td><a href = "{{url_for('manager.edit_user', id=users.id ) }}" > {{ users.first_name}} {{users.last_name}} </a></td>
+  <td>{{ details[0] }}</td>
+  <td>{{ '%0.3f'| format(details[1]) | float }}</td>
+  <td>{{ details[2] }}</td>
+  </tr>
+{% endfor %}
+</tbody>
+</table>
+
+<p> total_amount_to_be_collected {{ '%0.3f'| format(total_amount_to_be_collected) | float }}</p>
+
+  </div>
+</div>
+
+
+<div class="row collapse" id="attendance_today">
+  <div class="col-md-4"></div>
+  <div class="col-md-4">
+
+    <p class="bg-primary">Todays Attendance </p>
+    <p> BreakFast {{ attendance[1]}} </p>
+    <p> Lunch {{ attendance[2]}} </p>
+    <p> Dinner {{ attendance[3]}} </p>
+
+
+    <p class="bg-warning">Todays Absent List</p>
+    <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>No</th>
+      <th>Name</th>
+      <th>Absent Time</th>
+      <th>Absent Reason </th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+
+    {% for user, attendance_time in attendance[4].items()%}
+    <tr>
+      <td> {{ loop.index }}</td>
+      <td>{{user.first_name}} {{user.last_name}}</td>
+      <td><a href = "{{url_for('manager.edit_attendance', user_id=user.id )}}" > {{ attendance_time[0]}} </a></td>
+      <td>{{ attendance_time[1]}}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+
+
+    </table>
+  </div>
+</div>
+
+<div class="row collapse" id="approval_pending">
+  <div class="col-md-4"></div>
+  <div class="col-md-4">
+
+    <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>No</th>
+      <th>Name</th>
+      <th>Phonenumber</th>
+    </tr>
+    </thead>
+    <tbody>
+
+
+    {% for users in pending_users %}
+    <tr>
+      <td> {{ loop.index }}</td>
+      <td><a href = "{{url_for('manager.edit_user', id=users.id ) }}" > {{ users.first_name}} {{ users.last_name}} </a></td>
+      <td>{{ users.phonenumber }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+
+  </div>
+
+</div>
+
+<div class="row collapse" id="hostel_alumni">
+  <div class="col-md-4"></div>
+  <div class="col-md-4">
+
+    <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>No</th>
+      <th>Name</th>
+      <th>Phonenumber</th>
+    </tr>
+    </thead>
+    <tbody>
+
+
+    {% for alumni in alumni_users %}
+    <tr>
+      <td> {{ loop.index }}</td>
+      <td><a href = "{{url_for('manager.edit_user', id=alumni.id ) }}" > {{ alumni.first_name}} {{ alumni.last_name}} </a></td>
+      <td>{{ alumni.phonenumber }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+
+  </div>
+</div>
+
+
+</div>
+
+
+</div>
+
+<br>
+
+
+
+{# {{ pendlist[0].users.first_name }} #}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+
+$(document).ready(function(){
+    $("#footer-div").css("display","none");
+});
+</script>
+
+{% endblock %}

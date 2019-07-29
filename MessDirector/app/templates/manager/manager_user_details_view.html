@@ -1,0 +1,112 @@
+{% extends 'flask_user/_public_base.html' %}
+
+
+{% block content %}
+{% from "flask_user/_macros.html" import render_field, render_submit_field %}
+<h1>{%trans%}Edit User Basic Details:  {%endtrans%}</h1>
+
+<form action="" method="POST" novalidate formnovalidate class="form" role="form">
+    {{ form.hidden_tag() }}
+
+    {# Username or Email #}
+    {% set field = form.first_name %}
+    <div class="form-group {% if field.errors %}has-error{% endif %}">
+         <div class="row">
+            <div class="col-xs-6">
+                <label for="{{ field.id }}" class="control-label">{{ field.label.text }}</label>
+        </div>
+    </div>
+
+        {{ field(class_='form-control', tabindex=210) }}
+
+        {{ render_field(form.last_name, tabindex=230) }}
+
+        {{ render_field(form.email, tabindex=230) }}
+
+        {{ render_field(form.phonenumber, tabindex=230) }}
+
+        {{ render_field(form.parent_phone, tabindex=230) }}
+
+        {{ render_field(form.address, tabindex=230) }}
+
+        {{ render_field(form.caution_deposit, tabindex=230) }}
+
+        {{ render_field(form.rent_amount, tabindex=230) }}
+
+        {{ render_field(form.joining_date, tabindex=230) }}
+
+        <p> Current Status:  {{ st }} </p>
+        {{ render_field(form.user_status, tabindex=230) }}
+
+        {{ form.submit }}
+    </form>
+
+      <h1>{%trans%} Bill Payment Details:  {%endtrans%}</h1>
+
+      <form action="" method="POST" novalidate formnovalidate class="form" role="form">
+          {{ form.hidden_tag() }}
+
+          {# Username or Email #}
+
+          <div class="form-group {% if field.errors %}has-error{% endif %}">
+
+
+        {{ render_field(user_bill_form.paid_amount, tabindex=230) }}
+
+        {{ render_field(user_bill_form.bill_paying_month, type="month" ) }}
+
+
+
+
+        {% if field.errors %}
+            {% for e in field.errors %}
+                <p class="help-block">{{ e }}</p>
+            {% endfor %}
+        {% endif %}
+    </ div>
+
+
+    {{ user_bill_form.submit_bill_details }}
+</form>
+
+
+  <div class="row">
+
+    <div class="col-md-6">
+
+      <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>No</th>
+        <th>Date</th>
+        <th>Current Bill</th>
+        <th>Total Bill</th>
+        <th>Amount Paid</th>
+        <th>Bill Balance</th>
+      </tr>
+      </thead>
+      <tbody>
+
+
+      {% for bill_items in billing_history %}
+      <tr>
+        <td> {{ loop.index }}</td>
+        <td>{{ bill_items.bill_date }}</td>
+        <td>{{ '%0.3f'| format(bill_items.bill_amount_current_date)|float }}</td>
+        <td> {{ '%0.3f'| format(bill_items.bill_total)|float }} </td>
+        <td> {{ '%0.3f'| format(bill_items.bill_payment)|float }} </td>
+        <td> {{ '%0.3f'| format(bill_items.bill_balance)|float }} </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+      </table>
+
+        </div>
+      </div>
+
+
+
+
+
+
+{% endblock %}

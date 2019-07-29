@@ -1,0 +1,159 @@
+{% extends "layout.html" %}
+{% block content %}
+<nav class="navbar navbar-expand-lg navbar-light">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse " id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-item bg-info nav-link btn" href="{{ url_for('manager.hostel_summary')}}"> Home <span class="sr-only">(current)</span></a>
+      </div>
+  </div>
+</nav>
+
+
+<main role="main" class="container">
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+ {% with messages = get_flashed_messages(with_categories=true) %}
+   {% if messages %}
+     {% for category, message in messages %}
+       <div class="alert alert-{{ category }}">
+         {{ message }}
+       </div>
+     {% endfor %}
+   {% endif %}
+ {% endwith %}
+
+
+
+  <div class="content-section" id="create_bill">
+      <form method="POST" action="">
+          {{ bill_section_form.hidden_tag() }}
+          <fieldset class="form-group">
+              <legend class="border-bottom mb-4" style="color:#1C5488">Enter Bill Details</legend>
+                <div class="form-group">
+                    {{ bill_section_form.hostel_expense_month.label(class="form-control-label", style="color:#1C5488") }}
+                    {% if bill_section_form.hostel_expense_month.errors %}
+                        {{ bill_section_form.hostel_expense_month(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in bill_section_form.hostel_expense_month.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ bill_section_form.hostel_expense_month(class="form-control form-control-lg", type="month") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ bill_section_form.hostel_monthly_expense.label(class="form-control-label", style="color:#1C5488") }}
+                    {% if bill_section_form.hostel_monthly_expense.errors %}
+                        {{ bill_section_form.hostel_monthly_expense(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in bill_section_form.hostel_expense_month.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ bill_section_form.hostel_monthly_expense(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ bill_section_form.hostel_monthly_buffer.label(class="form-control-label", style="color:#1C5488") }}
+                    {% if bill_section_form.hostel_monthly_buffer.errors %}
+                        {{ bill_section_form.hostel_monthly_buffer(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in bill_section_form.hostel_monthly_buffer.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ bill_section_form.hostel_monthly_buffer(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ bill_section_form.hostel_common_expense.label(class="form-control-label", style="color:#1C5488") }}
+                    {% if bill_section_form.hostel_common_expense.errors %}
+                        {{ bill_section_form.hostel_common_expense(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in bill_section_form.hostel_common_expense.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ bill_section_form.hostel_common_expense(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ bill_section_form.hostel_working_days_per_month.label(class="form-control-label", style="color:#1C5488") }}
+                    {% if bill_section_form.hostel_working_days_per_month.errors %}
+                        {{ bill_section_form.hostel_working_days_per_month(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in bill_section_form.hostel_working_days_per_month.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ bill_section_form.hostel_working_days_per_month(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+              </fieldset>
+
+              <div class="form-group">
+                  {{ bill_section_form.submit_bill_section(class="btn btn-outline-info") }}
+              </div>
+          </form>
+
+        </div>
+
+        <div id="accordion">
+
+          <div class="card">
+            <div class="card-header">
+              <a class="card-link" data-toggle="collapse" href="#collapseOne">
+                View Previous Expense Details
+              </a>
+              </div>
+            <div id="collapseOne" class="collapse show" data-parent="#accordion">
+              <div class="card-body">
+                  <form method="POST" action="">
+                  {{ billing_history_form.hidden_tag() }}
+                  <fieldset class="form-group">
+                          <div class="fbilling_history_formorm-group">
+                            {{ billing_history_form.attendance_view_date.label(class="form-control-label", style="color:#1C5488") }}
+                            {% if billing_history_form.attendance_view_date.errors %}
+                                {{ billing_history_form.attendance_view_date(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in billing_history_form.attendance_view_date.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ billing_history_form.attendance_view_date(class="form-control form-control-lg", type="month") }}
+                            {% endif %}
+                        </div>
+                      </fieldset>
+
+                      <div class="form-group">
+                          {{ billing_history_form.submit1(class="btn btn-info") }}
+                      </div>
+              </form>
+              <p> Monthly Expense  {{ expense_data.expense_monthly }} </p>
+              <p> Monthly Buffer  {{ expense_data.expense_monthly_buffer }} </p>
+              <p> Daily Expense  {{ expense_data.expense_daily_expense }} </p>
+              <p> Total Points {{ expense_data.expense_total_points }}</p>
+
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+  </div>
+  </div>
+  </main>
+{% endblock content %}

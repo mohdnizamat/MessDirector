@@ -1,0 +1,26 @@
+{% extends "main/main_base.html" %}  {# main/main_base.html extends layout.html #}
+
+
+{% block content %}
+{% block flash_messages %}
+    {%- with messages = get_flashed_messages(with_categories=true) -%}
+        {% if messages %}
+            {% for category, message in messages %}
+                {% if category=='error' %}
+                    {% set category='danger' %}
+                {% endif %}
+                <div class="alert alert-{{category}}">{{ message|safe }}</div>
+            {% endfor %}
+        {% endif %}
+    {%- endwith %}
+{% endblock %}
+<div class="container h-100">
+<div class="row h-100 justify-content-center align-items-center">
+    <div class="col-4 justify-content-center align-self-center">
+      <p><a href={{ url_for('user.login') }} class="btn btn-danger">{%trans%}Sign in{%endtrans%}</a></p>
+      <p><a href={{ url_for('user.register') }} class="btn btn-warning" >{%trans%}Register{%endtrans%}</a></p>
+      <!--  <p><a href={{ url_for('user.logout') }}>{%trans%}Sign out{%endtrans%}</a></p> -->
+    </div>
+  </div>
+</div>
+{% endblock %}
